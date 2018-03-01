@@ -1,4 +1,8 @@
 {
-  "subreddits": ["funny", "videos"],
-  "keywords": ["fun", "in", "a", "wonderful", "world"]
+  "keywords": [
+    {
+      "text": "fun",
+      "count": 999
+    }
+  ]
 }
