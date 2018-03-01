@@ -15,7 +15,7 @@ export class RedditRouter {
   /**
    * GET all Keywords.
    */
-  public getAll(req: Request, res: Response, next: NextFunction) {
+  public getKeywords(req: Request, res: Response, next: NextFunction) {
     res.send(Keywords);
   }
 
@@ -24,7 +24,7 @@ export class RedditRouter {
    * endpoints.
    */
   init() {
-    this.router.get('/', this.getAll);
+    this.router.get('/', this.getKeywords);
   }
 
 }
