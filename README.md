@@ -22,6 +22,15 @@ npm start
 Which will allow you to open your web browser to localhost:3000 and see the
 listed endpoints.
 
+The API has two endpoints:
+
+- GET localhost:3000/api/v1/keywords/subreddit | query: {subreddit="funny", limit=10}
+- GET localhost:3000/api/v1/keywords/thread | query: {subreddit="funny", limit=10}
+
+Both take a query parameter that allows for the thread/subreddit and a limit on
+returned items. The thread/subreddit is required where the limit is optional.
+
+
 ## Running Tests
 
 ```bash
