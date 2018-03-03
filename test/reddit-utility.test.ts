@@ -20,9 +20,10 @@ describe('#retreiveThreads', () => {
 });
 
 describe('#retreiveComents', () => {
+  let thread = '/r/funny/comments/8107wa/the_guy_in_red_and_blue_is_a_magnet_for_trouble/';
 
   it('responds with an array of post IDs', (done) => {
-    RedditUtility.retreiveComments('/r/funny/comments/8107wa/the_guy_in_red_and_blue_is_a_magnet_for_trouble/')
+    RedditUtility.retreiveComments(thread)
       .then(function(data) { 
         expect(data).to.be.an('array');
         done();
@@ -36,19 +37,25 @@ describe('#subredditUrl', () => {
   });
 });
 
-describe('#compressArray', () => {
-  it('returns an array of Words', () => {
-    let arrayOfWords = ["dog", "dog", "cat", "bird"]
-    let compressedArray = RedditUtility.compressArray(arrayOfWords);
-    expect(compressedArray).to.be.an('array');
-    expect(compressedArray[0].count).to.equal(2);
+
+
+describe('#getWordListForThread', () => {
+  let thread = '/r/funny/comments/8107wa/the_guy_in_red_and_blue_is_a_magnet_for_trouble/';
+
+  it('returns an array of Words', (done) => {
+    RedditUtility.getWordListForThread(thread).then(function(response) {
+      expect(response).to.be.an('array');
+      done();
+    })
   });
 });
 
+describe('#getWordListForSubreddit', () => {
+  let subreddit = 'funny'
 
-describe('#getWordListFor', () => {
   it('returns an array of Words', (done) => {
-    RedditUtility.getWordListFor('/r/funny/comments/8107wa/the_guy_in_red_and_blue_is_a_magnet_for_trouble/').then(function(response) {
+    RedditUtility.getWordListForSubreddit(subreddit).then(function(response) {
+      console.log(response);
       expect(response).to.be.an('array');
       done();
     })

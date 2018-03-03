@@ -1,28 +1,49 @@
 import axios, {AxiosResponse} from 'axios';
-import Word from '../src/word';
+import Word from './word';
+import WordList from './WordList';
+
 
 class RedditUtility {
-  getWordListFor(thread): Promise<Word[]> {
+  getWordListForThread(thread): Promise<Word[]> {
+    let words: WordList = new WordList;
     return this.retreiveComments(thread)
-          .then(res => this.compressArray(res));
+          .then(res => words.generateWords(res));
   }
 
-  retreiveComments(thread: string): Promise<any> {
+  getWordListForSubreddit(subreddit): Promise<Word[]> {
+    let words: WordList = new WordList;
+    let promises = [];
+    return this.retreiveThreads(subreddit, 1)
+      .then(threads => {
+        threads.forEach(e => promises.push(
+          this.retreiveComments(e)
+          .then(res => {
+            words.update_text(res)
+          })
+        ))
+        return Promise.all(promises).then(() => {
+          return words.generateWords(words.raw_text)
+        })
+      });
+  }
+
+
+  retreiveComments(thread: string): Promise<string[]> {
     let url: string = 'https://www.reddit.com' + thread + '.json';
 
     return axios
       .get(url)
       .then(res => this.generateWordList(res.data))
-      .catch(error => console.log(error));
+      .catch(error => [error]);
   }
 
-  retreiveThreads(subreddit: string, days: number): Promise<any> {
+  retreiveThreads(subreddit: string, days: number): Promise<string[]> {
     let url: string = this.subredditUrl(subreddit);
 
     return axios
       .get(url)
       .then(res => this.generatePermalinkList(res.data))
-      .catch(error => console.log(error));
+      .catch(error => [error]);
   }
 
   subredditUrl(subreddit): string {
@@ -50,7 +71,7 @@ class RedditUtility {
     let text = this.getCommentsFromArray(json[1].data.children);
     return text;
   }
-  
+
   //Recursively go through the object tree and compile all the comments
   getCommentsFromArray(arr: string[]): string {
     let text = '';
@@ -67,37 +88,6 @@ class RedditUtility {
     return text;
   }
 
-  compressArray(original: string[]): Word[] {
-    let compressed = [];
-    // make a copy of the input array
-    let copy: string[] = original.slice(0);
-  
-    // first loop goes over every element
-    for (let i = 0; i < original.length; i++) {
-  
-      let myCount = 0;
-
-      // loop over every element in the copy and see if it's the same
-      for (let w = 0; w < copy.length; w++) {
-        if (original[i] == copy[w]) {
-          // increase amount of times duplicate is found
-          myCount++;
-          // sets item to undefined
-          delete copy[w];
-        }
-      }
-      if (myCount > 0) {
-        let word = new Word();
-        word.value = original[i];
-        word.count = myCount;
-        compressed.push(word);
-      }
-    }
-    return compressed
-      .sort((a, b) => {
-        return b.count - a.count
-      })
-  }
 }
 
 export default new RedditUtility;

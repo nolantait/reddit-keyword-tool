@@ -33,7 +33,7 @@ class App {
     // placeholder route handler
     router.get('/', (req, res, next) => {
       res.json({
-        message: 'Hello World!'
+        message: 'Endpoints: [GET /api/v1/keywords/thread query:{thread=/r/reddit-thread-url limit=10}] [GET /api/v1/keywords/subreddit query:{subreddit=funny limit=10}]'
       });
     });
     this.express.use('/', router);

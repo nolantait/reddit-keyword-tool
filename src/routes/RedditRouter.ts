@@ -1,6 +1,5 @@
 import {Router, Request, Response, NextFunction} from 'express';
 import RedditUtility from '../RedditUtility';
-const Keywords = require('../data');
 
 export class RedditRouter {
   router: Router
@@ -16,8 +15,8 @@ export class RedditRouter {
   /**
    * GET all Keywords.
    */
-  public getKeywords(req: Request, res: Response, next: NextFunction) {
-    RedditUtility.getWordListFor(req.query.thread)
+  public getThreadKeywords(req: Request, res: Response, next: NextFunction) {
+    RedditUtility.getWordListForThread(req.query.thread)
       .then(function(data) { 
         let limit = req.query.limit;
         if (!limit) {
@@ -27,12 +26,25 @@ export class RedditRouter {
       });
   }
 
+  public getSubredditKeywords(req: Request, res: Response, next: NextFunction) {
+    RedditUtility.getWordListForSubreddit(req.query.subreddit)
+      .then(function(data) { 
+        let limit = req.query.limit;
+        if (!limit) {
+          limit = data.length;
+        }
+        res.send(data.slice(0, limit))
+      });
+  }
+
+
   /**
    * Take each handler, and attach to one of the Express.Router's
    * endpoints.
    */
   init() {
-    this.router.get('/', this.getKeywords);
+    this.router.get('/thread', this.getThreadKeywords);
+    this.router.get('/subreddit', this.getSubredditKeywords);
   }
 
 }
