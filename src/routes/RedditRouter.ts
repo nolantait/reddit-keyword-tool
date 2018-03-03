@@ -18,7 +18,13 @@ export class RedditRouter {
    */
   public getKeywords(req: Request, res: Response, next: NextFunction) {
     RedditUtility.getWordListFor(req.query.thread)
-      .then(data => res.send(data.slice(0, 9)));
+      .then(function(data) { 
+        let limit = req.query.limit;
+        if (!limit) {
+          limit = data.length;
+        }
+        res.send(data.slice(0, limit))
+      });
   }
 
   /**
