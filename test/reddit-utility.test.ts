@@ -9,10 +9,10 @@ chai.use(chaiHttp);
 const expect = chai.expect;
 
 describe('RedditUtility', () => {
-  describe('#retreiveThreads', () => {
+  describe('#retrieveThreads', () => {
 
     it('responds with an array of post IDs', (done) => {
-      RedditUtility.retreiveThreads('funny', 5)
+      RedditUtility.retrieveThreads('funny', 5)
         .then(function(data) { 
           expect(data).to.be.an('array');
           done();
@@ -20,11 +20,11 @@ describe('RedditUtility', () => {
     });
   });
 
-  describe('#retreiveComents', () => {
+  describe('#retrieveComents', () => {
     let thread = '/r/funny/comments/8107wa/the_guy_in_red_and_blue_is_a_magnet_for_trouble/';
 
     it('responds with an array of post IDs', (done) => {
-      RedditUtility.retreiveComments(thread)
+      RedditUtility.retrieveComments(thread)
         .then(function(data) { 
           expect(data).to.be.an('array');
           done();

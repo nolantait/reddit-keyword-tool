@@ -9,11 +9,11 @@ format:
 
 ```json
 [
-  {value: dog, count: 4}
+  {"value": "dog", "count": 4}
 ]
 ```
 
-##Using the API
+## Using the API
 
 ```bash
 npm start
@@ -22,7 +22,7 @@ npm start
 Which will allow you to open your web browser to localhost:3000 and see the
 listed endpoints.
 
-##Running Tests
+## Running Tests
 
 ```bash
 npm test
@@ -33,7 +33,7 @@ Ideally I would like to record these, but after going through a couple of
 HTTP recorders that were not very nice, I would save this for a further
 iteration.
 
-##Assumptions
+## Assumptions
 
 My assumptions in building this API were that:
 
@@ -41,3 +41,4 @@ My assumptions in building this API were that:
 - Users prioritized atomic usage so users can choose between extracting keywords
   from threads or from subreddits and choose how to consume that within their
 app.
+

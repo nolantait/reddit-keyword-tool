@@ -6,17 +6,17 @@ import WordList from './WordList';
 class RedditUtility {
   getWordListForThread(thread): Promise<Word[]> {
     let words: WordList = new WordList;
-    return this.retreiveComments(thread)
+    return this.retrieveComments(thread)
           .then(res => words.generateWords(res));
   }
 
   getWordListForSubreddit(subreddit): Promise<Word[]> {
     let words: WordList = new WordList;
     let promises = [];
-    return this.retreiveThreads(subreddit, 1)
+    return this.retrieveThreads(subreddit, 1)
       .then(threads => {
         threads.forEach(e => promises.push(
-          this.retreiveComments(e)
+          this.retrieveComments(e)
           .then(res => {
             words.update_text(res)
           })
@@ -28,7 +28,7 @@ class RedditUtility {
   }
 
 
-  retreiveComments(thread: string): Promise<string[]> {
+  retrieveComments(thread: string): Promise<string[]> {
     let url: string = 'https://www.reddit.com' + thread + '.json';
 
     return axios
@@ -37,7 +37,7 @@ class RedditUtility {
       .catch(error => [error]);
   }
 
-  retreiveThreads(subreddit: string, days: number): Promise<string[]> {
+  retrieveThreads(subreddit: string, days: number): Promise<string[]> {
     let url: string = this.subredditUrl(subreddit);
 
     return axios
