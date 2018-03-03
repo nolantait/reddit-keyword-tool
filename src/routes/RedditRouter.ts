@@ -1,4 +1,5 @@
 import {Router, Request, Response, NextFunction} from 'express';
+import RedditUtility from '../RedditUtility';
 const Keywords = require('../data');
 
 export class RedditRouter {
@@ -16,7 +17,8 @@ export class RedditRouter {
    * GET all Keywords.
    */
   public getKeywords(req: Request, res: Response, next: NextFunction) {
-    res.send(Keywords);
+    RedditUtility.getWordListFor(req.query.thread)
+      .then(data => res.send(data.slice(0, 9)));
   }
 
   /**
