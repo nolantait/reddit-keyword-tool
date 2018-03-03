@@ -10,11 +10,11 @@ const expect = chai.expect;
 
 describe('RedditUtility', () => {
   describe('#retrieveThreads', () => {
-
-    it('responds with an array of post IDs', (done) => {
+    it('responds with an array of strings', (done) => {
       RedditUtility.retrieveThreads('funny', 5)
         .then(function(data) { 
           expect(data).to.be.an('array');
+          expect(data[0]).to.be.a('string');
           done();
         });
     });
@@ -23,10 +23,11 @@ describe('RedditUtility', () => {
   describe('#retrieveComents', () => {
     let thread = '/r/funny/comments/8107wa/the_guy_in_red_and_blue_is_a_magnet_for_trouble/';
 
-    it('responds with an array of post IDs', (done) => {
+    it('responds with an array of strings', (done) => {
       RedditUtility.retrieveComments(thread)
         .then(function(data) { 
           expect(data).to.be.an('array');
+          expect(data[0]).to.be.a('string');
           done();
         });
     });
@@ -38,14 +39,16 @@ describe('RedditUtility', () => {
     });
   });
 
-
-
   describe('#getWordListForThread', () => {
     let thread = '/r/funny/comments/8107wa/the_guy_in_red_and_blue_is_a_magnet_for_trouble/';
 
     it('returns an array of Words', (done) => {
       RedditUtility.getWordListForThread(thread).then(function(response) {
         expect(response).to.be.an('array');
+        expect(response[0]).to.have.all.keys ([
+          'value',
+          'count'
+        ])
         done();
       })
     });
@@ -57,6 +60,10 @@ describe('RedditUtility', () => {
     it('returns an array of Words', (done) => {
       RedditUtility.getWordListForSubreddit(subreddit).then(function(response) {
         expect(response).to.be.an('array');
+        expect(response[0]).to.have.all.keys ([
+          'value',
+          'count'
+        ])
         done();
       })
     });

@@ -12,7 +12,7 @@ class RedditUtility {
 
   getWordListForSubreddit(subreddit): Promise<Word[]> {
     let words: WordList = new WordList;
-    let promises = [];
+    let promises: Promise<any>[] = [];
     return this.retrieveThreads(subreddit, 1)
       .then(threads => {
         threads.forEach(e => promises.push(
@@ -57,11 +57,13 @@ class RedditUtility {
     response.data.children.forEach(function(child) {
       list.push(child.data.permalink);
     });
+
     return list;
   }
 
   generateWordList(response: AxiosResponse): string[] {
     let comments = this.getCommentsFromJSON(response);
+
     return comments
       .replace(/\n/g, '')
       .split(' ');
@@ -74,8 +76,9 @@ class RedditUtility {
 
   //Recursively go through the object tree and compile all the comments
   getCommentsFromArray(arr: string[]): string {
-    let text = '';
+    let text: string = '';
     let self = this;
+
     arr.forEach(function(item: any) {
       if (typeof item !== 'undefined') {
         text += item.data.body;
@@ -85,9 +88,9 @@ class RedditUtility {
         }
       }
     });
+
     return text;
   }
-
 }
 
 export default new RedditUtility;
