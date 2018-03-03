@@ -64,6 +64,7 @@ describe('RedditUtility', () => {
           'value',
           'count'
         ])
+        expect(response.length).to.be.greaterThan(2);
         done();
       })
     });

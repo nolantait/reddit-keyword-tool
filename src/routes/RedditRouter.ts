@@ -16,25 +16,35 @@ export class RedditRouter {
    * GET all Keywords.
    */
   public getThreadKeywords(req: Request, res: Response, next: NextFunction) {
-    RedditUtility.getWordListForThread(req.query.thread)
-      .then(function(data) { 
-        let limit = req.query.limit;
-        if (!limit) {
-          limit = data.length;
-        }
-        res.send(data.slice(0, limit))
-      });
+    if (req.query.thread) {
+      RedditUtility.getWordListForThread(req.query.thread)
+        .then(function(data) { 
+          let limit = req.query.limit;
+          if (!limit) {
+            limit = data.length;
+          }
+          res.send(data.slice(0, limit))
+        })
+        .catch(e => res.send('Something went wrong.'));
+    } else {
+      res.send('Missing thread in query: ?thread="/r/thread-link-here"');
+    }
   }
 
   public getSubredditKeywords(req: Request, res: Response, next: NextFunction) {
-    RedditUtility.getWordListForSubreddit(req.query.subreddit)
-      .then(function(data) { 
-        let limit = req.query.limit;
-        if (!limit) {
-          limit = data.length;
-        }
-        res.send(data.slice(0, limit))
-      });
+    if (req.query.subreddit) {
+      RedditUtility.getWordListForSubreddit(req.query.subreddit)
+        .then(function(data) { 
+          let limit = req.query.limit;
+          if (!limit) {
+            limit = data.length;
+          }
+          res.send(data.slice(0, limit))
+        })
+        .catch(e => res.send('Something went wrong.'));
+    } else {
+      res.send('Missing subreddit in query: ?subreddit="funny"');
+    }
   }
 
 

@@ -7,7 +7,8 @@ class RedditUtility {
   getWordListForThread(thread): Promise<Word[]> {
     let words: WordList = new WordList;
     return this.retrieveComments(thread)
-          .then(res => words.generateWords(res));
+    .then(res => words.generateWords(res))
+    .catch(error => [error]);
   }
 
   getWordListForSubreddit(subreddit): Promise<Word[]> {
@@ -24,7 +25,8 @@ class RedditUtility {
         return Promise.all(promises).then(() => {
           return words.generateWords(words.raw_text)
         })
-      });
+      })
+    .catch(error => [error]);
   }
 
 
